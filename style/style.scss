@@ -1,0 +1,980 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+$fback: #2E1832;
+
+%bt1 {
+    border: 1px solid black;
+}
+
+%bt2 {
+    border: 1px solid red;
+}
+
+@font-face {
+    font-family: fafont;
+    src: url('../fonts/Dana-Regular.ttf');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: fafont1;
+    src: url('../fonts/Dana-Bold.ttf');
+    font-weight: bold;
+}
+
+li,
+a {
+    list-style-type: none;
+    text-decoration: none;
+    color: inherit;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+html {
+    direction: rtl;
+}
+
+// .gap {
+//     width: 100%;
+//     height: 200px;
+//     background-image: url(../img/main-background.svg);
+// }
+
+.player {
+    position: fixed;
+    right: 0;
+    bottom: 10px;
+    z-index: 10000;
+}
+
+.toolbar {
+    display: flex;
+    font-size: 50px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: space-evenly;
+    position: fixed;
+    left: 0;
+    top: 20%;
+    margin: 40px;
+    border-radius: 50px;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.529);
+    text-align: center;
+    width: 70px;
+    height: 290px;
+
+    >a {
+        color: white;
+        transition: .4s;
+        justify-content: center;
+        position: relative;
+
+        >i {
+            text-shadow:
+                0px 0px 1px rgba(255, 255, 255, 0.612),
+                0px 0px 5px rgba(255, 255, 255, 0.437),
+                0px 0px 10px rgba(255, 255, 255, 0.187);
+        }
+
+        span {
+            font-family: fafont;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+            width: 130px;
+            height: 50px;
+            border-radius: 30px;
+            position: absolute;
+            font-size: 25px;
+            top: 5px;
+            left: 25%;
+            opacity: 0;
+            visibility: hidden;
+            transition: .4s;
+            // top: 50%; 
+        }
+
+        &:hover {
+            transform: scale(115%);
+
+            >span {
+                visibility: visible;
+                opacity: 1;
+                left: 60px;
+            }
+        }
+
+        &:nth-of-type(1) {
+            color: deeppink;
+        }
+
+        &:nth-of-type(2) {
+            color: #0077ff;
+        }
+
+        &:nth-of-type(3) {
+            color: black;
+
+            >span {
+                color: white;
+            }
+        }
+
+        &:nth-of-type(4) {
+            color: #007AB5;
+        }
+
+    }
+}
+
+main {
+    // the whole page
+    font-family: fafont;
+    width: 100%;
+    height: 100vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    transform-style: preserve-3d;
+    perspective: 10px;
+    position: relative;
+    background-image: url(../img/main-background.svg);
+
+    >.row {
+        transform-style: preserve-3d;
+
+        >.head {
+            // the top section of the site
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            // z-index: -100;
+            justify-content: start;
+            align-items: center;
+            transform-style: preserve-3d;
+
+            >img {
+                // backgrounds
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transform-style: preserve-3d;
+            }
+
+            >.background {
+                // background
+                z-index: -100;
+                transform: translateZ(-10px) scale(2);
+            }
+
+            >.foreground {
+                // the castle background
+                z-index: -99;
+                transform: translateZ(-5px) scale(1.5);
+                pointer-events: none;
+            }
+
+            >header {
+                // website header
+                height: 80px;
+                padding: 50px 80px;
+                z-index: 1;
+                justify-content: space-between;
+
+                >.hlist {
+                    height: 100%;
+                    width: 25%;
+                    display: flex;
+                    align-items: center;
+
+                    >ul {
+                        display: flex;
+
+                        >li {
+                            margin: 0 10px;
+                            padding: 10px;
+                            cursor: pointer;
+                            transition: .4s;
+                            font-size: 20px;
+
+                            &:hover {
+                                color: darkorange;
+                            }
+
+                            >a {
+                                position: relative;
+
+
+                                &::before {
+                                    content: '';
+                                    position: absolute;
+                                    bottom: -5px;
+                                    right: 0;
+                                    width: 0;
+                                    height: 2px;
+                                    border-radius: 2px;
+                                    background-color: darkorange;
+                                    transition: .4s;
+                                }
+
+                            }
+
+                            &:hover>a::before {
+                                width: 100%;
+                            }
+                        }
+                    }
+                }
+
+                >.logo {
+                    // logo section
+                    width: 25%;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: end;
+
+                    >img {
+                        width: 70px;
+                        border-radius: 50%;
+                    }
+
+                    >h2 {
+                        font-family: fafont1;
+                        font-weight: bold;
+                        margin: 0 10px;
+                    }
+                }
+            }
+
+            // end of header
+
+            >.inf {
+
+                // info for head
+                width: 500px;
+                padding: 10px;
+                transform-style: preserve-3d;
+                position: absolute;
+                transform: translateZ(-10px) scale(2);
+
+                >div {
+                    display: flex;
+                    width: 100%;
+                    justify-content: center;
+                    margin: 10px 0;
+                    font-size: 1.2rem;
+                }
+
+                >.title {
+
+                    >h3 {
+                        font-size: 2.5rem;
+                        font-family: fafont1;
+
+                        >strong {
+                            color: blue;
+                        }
+                    }
+                }
+
+                >.buttons {
+
+                    >a {
+                        margin: 10px;
+                        padding: 10px 40px;
+                        border: 2px solid orange;
+                        border-radius: 30px;
+                        transition: .4s ease-in;
+
+                        &:hover {
+                            box-shadow:
+                                -2px 2px 5px #00bbf9,
+                                -4px 4px 10px #fe7f2d,
+                                2px -2px 5px #f15bb5,
+                                4px -4px 10px#52b69a;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        // end of top section
+
+        >.sec1 {
+            // section one <section> tag and container of section 1
+            width: 100%;
+            height: 100vh;
+            padding: 100px 100px;
+            background-color: darkcyan;
+            position: relative;
+            z-index: -1;
+            background-image: url('../img/background4.jpg');
+            background-size: 100% 100%;
+            margin-bottom: 200px;
+
+            >.row {
+                height: 100%;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 250px;
+
+
+                >.card {
+                    width: 400px;
+                    height: 550px;
+
+                    background-color: #151515;
+                    color: white;
+                    border-radius: 20px;
+                    position: relative;
+
+
+                    >div {
+                        // all divs in cards
+                        display: flex;
+                        width: 100%;
+
+                        padding: 10px;
+                    }
+
+                    >.title {
+                        height: 30%;
+
+                        >figure {
+                            width: 100%;
+                            height: 100%;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+
+                            >img {
+                                width: 60px;
+                                margin: 20px;
+                            }
+
+                            >figcaption {
+                                font-size: 1.2rem;
+                            }
+                        }
+                    }
+
+                    >.text {
+                        height: 50%;
+                        display: block;
+
+
+                        >p {
+                            width: 100%;
+                            color: grey;
+                            margin: 1.1rem 0 2.5rem 0;
+                        }
+
+                        >ul {
+                            text-align: center;
+                            width: 100%;
+
+                            >li {
+                                padding: 5px;
+                                font-size: 1.2rem;
+
+                                >i {
+                                    color: green;
+                                    font-size: 1.4rem;
+                                    margin: 0 2px;
+                                }
+                            }
+                        }
+                    }
+
+                    >.buttons {
+                        height: 20%;
+                        display: flex;
+                        justify-content: center;
+                        padding-top: 15px;
+
+                        >a {
+                            width: 200px;
+                            height: 50px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            border: 1px solid #00ADEF;
+                            border-radius: 30px;
+                            color: #00ADEF;
+                            background: linear-gradient(90deg, #00ADEF, #00ADEF);
+                            background-size: 0 100%;
+                            background-repeat: no-repeat;
+                            background-position: right;
+                            transition: .4s;
+
+
+                            &:hover {
+                                color: white;
+                                background-size: 100% 100%;
+                            }
+                        }
+                    }
+                }
+
+                >.right {
+                    transition: 2s;
+                    transform-origin: 100% 50%;
+
+                    &:hover {
+                        transform: translateY(-15px) rotateZ(2deg);
+                    }
+
+                }
+
+                >.left {
+                    transition: 2s;
+                    transform: translateY(0) rotate(0);
+                    transform-origin: 0% 50%;
+
+                    &:hover {
+                        transform: translateY(-15px) rotateZ(-2deg);
+                    }
+                }
+
+                >.svg {
+                    position: absolute;
+                    width: 25%;
+                    height: 60%;
+                    top: 15%;
+                    z-index: -1;
+                    opacity: .8;
+                }
+
+                >.svg-right {
+                    right: 10rem;
+                    border-radius: 23% 77% 76% 24% / 47% 53% 47% 53%;
+                    background: linear-gradient(95deg, #fe7f2d, #f15bb5);
+                }
+
+                >.svg-left {
+                    left: 10rem;
+                    border-radius: 77% 23% 16% 84% / 65% 61% 39% 35%;
+                    background: linear-gradient(-95deg, #00ADEF, #52b69a);
+                }
+            }
+        }
+
+        // end of section 1
+
+        >.sec2 {
+            // section 2 <sectiotn>. the container
+            background-image: url(../img/Meteor.svg);
+            background-size: cover;
+            height: 50vh;
+            padding: 10px;
+            color: white;
+            position: relative;
+            z-index: -2;
+
+            &::before {
+                content: '';
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                inset: 0;
+                background-color: rgba(0, 0, 0, 0.419);
+                z-index: -1;
+            }
+
+            >div:not(.title) {
+                // general three divs
+                width: 33.33333%;
+                height: calc(100% - 70px);
+
+                // all divs whole childs
+                >* {
+                    margin-bottom: 30px;
+                }
+
+                // all divs paragraphs
+                >p {
+                    font-size: 1.2rem;
+                    width: 100%;
+                }
+
+                // divs class code paragraph, just for first division
+                >.code {
+                    text-align: center;
+
+                    >a {
+                        font-size: 2rem;
+
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+                }
+
+                // the button of the first division
+                >.button {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 50%;
+                    height: 75px;
+                    font-size: 1.4rem;
+                    border-radius: 50px;
+                    transition: .4s;
+                    background-color: #0077ff;
+
+                    &:hover {
+                        animation-name: pulse;
+                        animation-duration: .4s;
+                        animation-timing-function: linear;
+                        box-shadow: 0px 0px 0px 40px transparent;
+                    }
+
+                    @keyframes pulse {
+                        0% {
+                            box-shadow: 0px 0px 0px 0px orange;
+                        }
+                    }
+                }
+
+                // the middle and the left sec2 containers 
+                &:is(:nth-of-type(3), :nth-of-type(4)) {
+                    text-align: center;
+
+                    >.buttons {
+                        width: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        >a {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            margin: 10px 20px;
+                            width: 150px;
+                            height: 50px;
+                            border-radius: 50px;
+                            position: relative;
+                            overflow: hidden;
+                            z-index: 1;
+                            border: 2px solid #0077ff;
+
+                            &::before {
+                                content: '';
+                                width: 100%;
+                                height: 100%;
+                                position: absolute;
+                                z-index: -1;
+                                border-radius: 50px;
+                            }
+
+                            &:hover::before {
+                                transform: scale(1);
+                                background-color: transparent;
+                                animation: open .5s;
+
+                                @keyframes open {
+                                    0% {
+                                        scale: 0;
+                                        background-color: darkorange;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            >.title {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 70px;
+
+                >h3 {
+                    font-size: 1.8rem;
+                }
+            }
+        }
+
+        // end of the section 2
+
+        >.sec3 {
+            // section 3 <secttion> tag and the container of the entire section
+            height: 500px;
+            padding: 50px;
+
+            >.row {
+                // cards container
+                height: 100%;
+
+                justify-content: space-evenly;
+                align-items: center;
+
+                >div {
+                    // the cards
+                    width: 20%;
+                    height: 70%;
+                    color: white;
+                    padding: 10px;
+                    transition: .4s;
+                    direction: rtl;
+                    cursor: pointer;
+
+
+                    >div {
+                        // the cards parts
+                        display: flex;
+                        width: 100%;
+                        justify-content: center;
+                        font-size: 1.6rem;
+                        margin-bottom: 5px;
+                        transition: .4s;
+                    }
+
+                    >.icon {
+
+                        >a {
+                            font-size: 3rem;
+                            transition: .4s;
+                        }
+                    }
+
+                    >.description {
+                        font-size: 1rem;
+                        text-align: center;
+                        color: gray;
+                        margin-top: 5px;
+                    }
+
+                    &:nth-of-type(1):hover>.icon>a {
+                        color: red;
+                    }
+
+                    &:nth-of-type(2):hover>.icon>a {
+                        color: green;
+                    }
+
+                    &:nth-of-type(3):hover>.icon>a {
+                        color: lightseagreen;
+                    }
+                }
+            }
+        }
+
+        // end of section 3
+
+        >.sec4 {
+            height: 80vh;
+            padding: 50px;
+            margin-bottom: 400px;
+
+
+            >div {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            >.acco {
+                // the accordeon container
+                width: 60%;
+
+                >div {
+                    width: 90%;
+                    border-radius: 10px;
+
+                    >.row {
+                        // the accaordeon parts
+                        align-items: center;
+                        justify-content: space-between;
+                        height: 70px;
+                        color: white;
+                        font-size: 1.2rem;
+                        padding: 10px 20px;
+                        border-radius: 10px;
+                        background-color: #151515;
+
+                        &:hover {
+                            background-color: #00bbf9;
+                        }
+
+                        >i {
+                            transition: .4s;
+                        }
+
+                        &:hover>i {
+                            transform: translateX(-10px);
+                        }
+                    }
+                }
+            }
+
+            >.svg {
+                width: 40%;
+            }
+        }
+
+        // end of section 4
+
+        >footer {
+            // the entire footer
+            height: 300px;
+            background-color: $fback;
+            position: relative;
+            color: white;
+
+            >div {
+                // the 3 footer containers
+                width: 33.333%;
+                display: flex;
+                padding: 20px;
+            }
+
+            >.pf {
+                // the right or the profile picture division container
+                justify-content: center;
+                align-items: center;
+
+                >figure {
+                    // container of the profile imaage and the effects
+                    width: 250px;
+                    height: 250px;
+                    border-radius: 50%;
+                    position: relative;
+                    background-color: rgb(58, 58, 58);
+                    overflow: hidden;
+                    cursor: pointer;
+                    transition: 1s;
+
+                    &::before {
+                        // the spinning effect
+                        content: '';
+                        position: absolute;
+                        top: -10px;
+                        left: 50%;
+                        height: calc(100% + 10px);
+                        width: 100px;
+                        background: linear-gradient(#fe7f2d, #52b69a);
+                        transform: translateX(-50%);
+                        animation: pfRotate 1.5s linear infinite;
+                        transition: 1s;
+
+                        @keyframes pfRotate {
+                            0% {
+                                transform: translateX(-50%) rotate(0deg);
+                            }
+
+                            100% {
+                                transform: translateX(-50%) rotate(360deg);
+                            }
+                        }
+                    }
+
+                    &::after {
+                        // the mask that makes the ::before spinning like a border spinning
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        inset: 5px;
+                        border-radius: 50%;
+                        background-color: $fback;
+                        z-index: 1;
+                    }
+
+                    >img {
+                        // the profile picture
+                        display: block;
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        z-index: 5;
+                        border-radius: 50%;
+                        width: 220px;
+                    }
+
+                    &:hover::before {
+                        // when the profile picture is hovered this hover effect will occure
+                        width: calc(100% + 10px);
+                    }
+                }
+            }
+
+            >.info {
+                // the middle or the information division of the footer
+                display: block;
+                color: white;
+
+                >div {
+                    // all the container divs in information or the middle division
+                    width: 100%;
+                    height: 33.333%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    
+                }
+
+                >.name {
+                    
+                    >h3 {
+                        font-size: 2rem;
+                        width: 100%;
+                        text-align: center;
+                    }
+                }
+
+                >.socials {
+                    // the social container in the middle div container
+                    >ul {
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: 2.5rem;
+                        align-self: start;
+
+                        >li {
+                            padding: 0 10px;
+                            
+
+                            a {
+                                display: flex;
+                                transition: .4s;
+                            }
+
+                            &:hover>a {
+                                transform: scale(1.5);
+                            }
+                        }
+                    }
+                }
+
+                >.contact-me {
+                    // contact me container of the middle div container
+                    >a {
+                        display: flex;
+                        padding: 0 10px;
+                    }
+                }
+
+            }
+
+            >.about-me {
+                // the about me footer division container or the left one
+                display: block;
+                padding: 30px;
+
+                >* {
+                    width: 100%;
+                    margin: 30px 0;
+                }
+
+                >h3 {
+                    font-size: 1.6rem;
+                }
+            }
+
+            .wave {
+                // the waves
+                display: flex;
+                width: 100%;
+                height: 100px;
+                background-image: url(../img/wave.png);
+                background-size: 1000px 100px;
+                position: absolute;
+                top: -100px;
+                left: 0;
+                z-index: -1;
+            }
+
+            .wave1 {
+                z-index: 997;
+                bottom: 0px;
+                animation: wave1 linear infinite 4s;
+                opacity: .8;
+
+                @keyframes wave1 {
+                    0% {
+                        background-position-x: 1000px;
+                    }
+
+                    100% {
+                        background-position-x: 0;
+                    }
+                }
+            }
+
+            .wave2 {
+                z-index: 999;
+                animation: wave2 linear infinite 3s;
+                opacity: .7;
+
+                @keyframes wave2 {
+                    0% {
+                        background-position-x: 0;
+                    }
+
+                    100% {
+                        background-position-x: 1000px;
+                    }
+                }
+            }
+
+            .wave3 {
+                z-index: 998;
+                animation: wave3 linear infinite 2s;
+                opacity: .2;
+
+                @keyframes wave3 {
+                    0% {
+                        background-position-x: 1000px;
+                    }
+
+                    100% {
+                        background-position-x: 0px;
+                    }
+                }
+            }
+
+            .wave4 {
+                z-index: 999;
+                background-position-x: 1000px;
+                animation: wave3 linear infinite 5s;
+                opacity: .6;
+
+                @keyframes wave4 {
+                    0% {
+                        background-position-x: 0px;
+                    }
+
+                    100% {
+                        background-position-x: 1000px;
+                    }
+                }
+            }
+
+        }
+
+        // the end of footer
+    }
+}
